@@ -37,6 +37,7 @@ components:
       properties:
         id:
           type: string
+        
         keyName:
           type: string
         applicationId:
@@ -119,6 +120,7 @@ paths:
       summary: List all applications
       security:
         - BearerAuth: []
+      x-paginated: false
       responses:
         '200':
           description: List of applications
@@ -271,6 +273,7 @@ paths:
       summary: List all transactions
       security:
         - BearerAuth: []
+      x-paginated: false
       parameters:
         - in: query
           name: appId
@@ -296,6 +299,7 @@ paths:
       summary: Get transaction details
       security:
         - BearerAuth: []
+
       parameters:
         - in: path
           name: transactionId
@@ -320,6 +324,9 @@ paths:
   /health:
     get:
       summary: Health check endpoint
+      security:
+        - BearerAuth: []
+     
       responses:
         '200':
           description: API is healthy
@@ -328,3 +335,10 @@ paths:
               schema:
                 type: string
                 example: OK
+
+externalDocs:
+  url: https://docs.mpesaflow.com
+  description: MpesaFlow API Documentation
+
+security:
+  - BearerAuth: []
