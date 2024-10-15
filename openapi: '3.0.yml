@@ -1,9 +1,8 @@
-openapi: 3.0.0
+openapi: '3.0.3'
 info:
   title: MpesaFlow API
-  version: 1.0.0
+  version: '1.0'
   description: API for managing MpesaFlow transactions, applications, and API keys
-
 servers:
   - url: https://api.mpesaflow.com
     description: Production server
@@ -67,6 +66,20 @@ components:
           type: string
           format: date-time
 
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
 paths:
   /apps/create:
     post:
@@ -128,9 +141,9 @@ paths:
       parameters:
         - in: path
           name: appId
-          required: true
           schema:
             type: string
+          required: true
       responses:
         '200':
           description: Application deleted successfully
@@ -146,11 +159,17 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /api-keys/create:
+  /apps/{appId}/api-keys/create:
     post:
-      summary: Create a new API key
+      summary: Create a new API key for an application
       security:
         - BearerAuth: []
+      parameters:
+        - in: path
+          name: appId
+          schema:
+            type: string
+          required: true
       requestBody:
         required: true
         content:
@@ -158,8 +177,6 @@ paths:
             schema:
               type: object
               properties:
-                applicationId:
-                  type: string
                 keyName:
                   type: string
       responses:
@@ -170,7 +187,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  apiKey:
+                  apiKeyId:
                     type: string
                   message:
                     type: string
@@ -179,39 +196,25 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /api-keys/list:
-    get:
-      summary: List all API keys
-      security:
-        - BearerAuth: []
-      responses:
-        '200':
-          description: List of API keys
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ApiKey'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-
-  /api-keys/{keyId}:
+  /apps/{appId}/api-keys/{apiKeyId}:
     delete:
-      summary: Revoke an API key
+      summary: Delete an API key
       security:
         - BearerAuth: []
       parameters:
         - in: path
-          name: keyId
-          required: true
+          name: appId
           schema:
             type: string
+          required: true
+        - in: path
+          name: apiKeyId
+          schema:
+            type: string
+          required: true
       responses:
         '200':
-          description: API key revoked successfully
+          description: API key deleted successfully
           content:
             application/json:
               schema:
@@ -224,9 +227,9 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /transactions/paybill:
+  /transactions/create:
     post:
-      summary: Initiate a paybill transaction
+      summary: Create a new transaction
       security:
         - BearerAuth: []
       requestBody:
@@ -244,32 +247,17 @@ paths:
                   type: string
                 transactionDesc:
                   type: string
+                mpesaRequestId:
+                  type: string
       responses:
-        '200':
-          description: Transaction processed successfully
+        '201':
+          description: Transaction created successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   transactionId:
-                    type: string
-                  mpesaRequestId:
-                    type: string
-                  mpesaStatus:
-                    type: object
-        '202':
-          description: Transaction is still being processed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  transactionId:
-                    type: string
-                  mpesaRequestId:
-                    type: string
-                  status:
                     type: string
                   message:
                     type: string
@@ -278,40 +266,17 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /transactions/status/{transactionId}:
-    get:
-      summary: Get transaction status
-      security:
-        - BearerAuth: []
-      parameters:
-        - in: path
-          name: transactionId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Transaction status
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Transaction'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          description: Transaction not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-
   /transactions/list:
     get:
       summary: List all transactions
       security:
         - BearerAuth: []
+      parameters:
+        - in: query
+          name: appId
+          schema:
+            type: string
+          required: true
       responses:
         '200':
           description: List of transactions
@@ -321,6 +286,32 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Transaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /transactions/{transactionId}:
+    get:
+      summary: Get transaction details
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: transactionId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Transaction details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction:
+                    $ref: '#/components/schemas/Transaction'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -337,18 +328,3 @@ paths:
               schema:
                 type: string
                 example: OK
-
-components:
-  responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
