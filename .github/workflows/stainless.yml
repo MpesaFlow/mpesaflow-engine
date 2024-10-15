@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: stainless-api/upload-openapi-spec-action@main
         with:
-          stainless_api_key: ${{ secrets.STAINLESS_API_KEY }}
-          input_path: 'openapi.yml'
-          config_path: 'openapi.stainless.yml'
-          project_name: 'mpesaflow-engine'
+          stainless_api_key: ${{ secrets.STAINLES_API_KEY }}
+          input_path: "openapi.yml"
+          config_path: "openapi.stainless.yml"
+          project_name: "mpesaflow-engine"
