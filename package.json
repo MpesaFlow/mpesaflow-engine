@@ -1,0 +1,25 @@
+{
+	"name": "@mpesaflow/engine",
+	"module": "index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"scripts": {
+		"deploy:sandbox": "wrangler deploy --minify src/sandbox-api/src/index.ts",
+		"deploy:production": "wrangler deploy --minify src/production-api/src/index.ts"
+	},
+	"peerDependencies": {
+		"typescript": "^5.6.3"
+	},
+	"dependencies": {
+		"@cloudflare/workers-types": "^4.20241011.0",
+		"@microlabs/otel-cf-workers": "^1.0.0-rc.48",
+		"@types/node": "^20.8.7",
+		"@unkey/hono": "^1.4.7",
+		"crypto": "^1.0.1",
+		"hono": "^4.6.4",
+		"wrangler": "^3.80.4",
+		"zod": "^3.23.8"
+	}
+}
