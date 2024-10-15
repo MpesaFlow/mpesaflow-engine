@@ -1,0 +1,3 @@
+              - name: Stainless — Upload OpenAPI specification
+                uses: stainless-api/upload-openapi-spec-action@v0.4.3
+            
