@@ -37,7 +37,6 @@ components:
       properties:
         id:
           type: string
-        
         keyName:
           type: string
         applicationId:
@@ -46,6 +45,8 @@ components:
     Transaction:
       type: object
       properties:
+        id:
+          type: string
         transactionId:
           type: string
         amount:
@@ -125,14 +126,17 @@ paths:
           in: query
           schema:
             type: string
+          description: Cursor for the next page
         - name: ending_before
           in: query
           schema:
             type: string
+          description: Cursor for the previous page
         - name: limit
           in: query
           schema:
             type: integer
+          description: Number of items to return
       responses:
         '200':
           description: List of applications
@@ -141,7 +145,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  my_data:
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Application'
@@ -228,14 +232,17 @@ paths:
           in: query
           schema:
             type: string
+          description: Cursor for the next page
         - name: ending_before
           in: query
           schema:
             type: string
+          description: Cursor for the previous page
         - name: limit
           in: query
           schema:
             type: integer
+          description: Number of items to return
       responses:
         '200':
           description: List of API keys
@@ -244,7 +251,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  my_data:
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/ApiKey'
@@ -333,14 +340,17 @@ paths:
           in: query
           schema:
             type: string
+          description: Cursor for the next page
         - name: ending_before
           in: query
           schema:
             type: string
+          description: Cursor for the previous page
         - name: limit
           in: query
           schema:
             type: integer
+          description: Number of items to return
         - in: query
           name: appId
           schema:
@@ -354,7 +364,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  my_data:
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Transaction'
@@ -368,7 +378,6 @@ paths:
       summary: Get transaction details
       security:
         - BearerAuth: []
-
       parameters:
         - in: path
           name: transactionId
@@ -381,10 +390,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  transaction:
-                    $ref: '#/components/schemas/Transaction'
+                $ref: '#/components/schemas/Transaction'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -395,7 +401,6 @@ paths:
       summary: Health check endpoint
       security:
         - BearerAuth: []
-     
       responses:
         '200':
           description: API is healthy

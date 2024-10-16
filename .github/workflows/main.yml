@@ -16,3 +16,4 @@ jobs:
           stainless_api_key: ${{ secrets.STAINLESS_API_KEY }}
           input_path: "openapi.yml"
           project_name: "mpesaflow"
+          config_path: "openapi.stainless.yml"
