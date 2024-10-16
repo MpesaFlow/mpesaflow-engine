@@ -72,7 +72,7 @@ resources:
       create: post /apps/create
       list:
         endpoint: get /apps/list
-        paginated: cursor_id_pagination
+        paginated: CursorIDPage
       delete: delete /apps/{appId}
     subresources:
       api_keys:
@@ -80,7 +80,7 @@ resources:
           create: post /apps/{appId}/api-keys/create
           list:
             endpoint: get /apps/{appId}/api-keys/list
-            paginated: cursor_id_pagination
+            paginated: CursorIDPage
           delete: delete /apps/{appId}/api-keys/{apiKeyId}
 
   transactions:
@@ -90,7 +90,7 @@ resources:
       create: post /transactions/create
       list:
         endpoint: get /transactions/list
-        paginated: cursor_id_pagination
+        paginated: CursorIDPage
       retrieve: get /transactions/{transactionId}
 
   $client:
