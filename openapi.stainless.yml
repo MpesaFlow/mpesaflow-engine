@@ -8,17 +8,17 @@ organization:
 targets:
   node:
     package_name: mpesaflow
-    production_repo: Mpesaflow/mpesaflow-node
+    production_repo: MpesaFlow/mpesaflow-node
     publish:
       npm: true
   python:
     package_name: mpesaflow
-    production_repo: Mpesaflow/mpesaflow-python
+    production_repo: MpesaFlow/mpesaflow-python
     publish:
       pypi: true
   java:
     reverse_domain: com.mpesaflow.api
-    production_repo: Mpesaflow/mpesaflow-java
+    production_repo: MpesaFlow/mpesaflow-java
     publish:
       maven: true
 
