@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://app.stainlessapi.com/config.schema.json": "file:///home/evansso/Desktop/mpesaflow-engine/openapi.stainless.yml"
+    }
+}
