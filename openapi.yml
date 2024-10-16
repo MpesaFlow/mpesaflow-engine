@@ -120,16 +120,31 @@ paths:
       summary: List all applications
       security:
         - BearerAuth: []
-      x-paginated: false
+      parameters:
+        - name: starting_after
+          in: query
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
       responses:
         '200':
           description: List of applications
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Application'
+                type: object
+                properties:
+                  my_data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Application'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -193,6 +208,31 @@ paths:
                     type: string
                   message:
                     type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /apps/{appId}/api-keys/list:
+    get:
+      summary: List all API keys for an application
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: appId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: List of API keys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiKey'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -273,8 +313,19 @@ paths:
       summary: List all transactions
       security:
         - BearerAuth: []
-      x-paginated: false
       parameters:
+        - name: starting_after
+          in: query
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
         - in: query
           name: appId
           schema:
@@ -286,9 +337,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Transaction'
+                type: object
+                properties:
+                  my_data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Transaction'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':

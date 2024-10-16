@@ -74,16 +74,18 @@ apiKeys.post("/create", async (c) => {
 	}
 });
 
-apiKeys.get("/list", async (c) => {
+apiKeys.get("/list/:applicationId", async (c) => {
 	try {
 		const unkeyContext = c.get("unkey");
 		if (!unkeyContext?.valid || unkeyContext.meta?.type !== "root") {
 			return c.json({ error: "Unauthorized. Root key required." }, 401);
 		}
 
+		const { applicationId } = c.req.param();
 		const { CONVEX_URL } = env(c);
 
 		const apiKeys = await convexQuery(CONVEX_URL, "apiKeys:list", {
+			applicationId,
 			userId: unkeyContext.ownerId,
 		});
 

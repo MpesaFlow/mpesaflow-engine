@@ -14,12 +14,12 @@ targets:
     package_name: mpesaflow
     production_repo: null
     publish:
-      npm: false
+      npm: true
   python:
     package_name: mpesaflow
     production_repo: null
     publish:
-      pypi: false
+      pypi: true
 
 # `client_settings` define settings for the API client, such as extra constructor
 # arguments (used for authentication), retry behavior, idempotency, etc.
@@ -42,7 +42,32 @@ environments:
 
 # `pagination` defines [pagination schemes] which provides a template to match
 # endpoints and generate next-page and auto-pagination helpers in the SDKs.
-pagination: []
+pagination:
+  - name: my_cursor_id_page
+    type: cursor_id
+    request:
+      starting_after:
+        type: string
+        x-stainless-pagination-property:
+          purpose: next_cursor_id_param
+      ending_before:
+        type: string
+        x-stainless-pagination-property:
+          purpose: previous_cursor_id_param
+      limit:
+        type: integer
+    response:
+      my_data:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              x-stainless-pagination-property:
+                purpose: cursor_item_id
+          required:
+            - id
 
 # `resources` define the structure and organziation for your API, such as how
 # methods and models are grouped together and accessed. See the [configuration
@@ -66,7 +91,9 @@ resources:
       application: Application
     methods:
       create: post /apps/create
-      list: get /apps/list
+      list:
+        endpoint: get /apps/list
+        paginated: my_cursor_id_page
       delete: delete /apps/{appId}
     # Subresources define resources that are nested within another for more powerful
     # logical groupings, e.g. `cards.payments`.
@@ -74,6 +101,7 @@ resources:
       api_keys:
         methods:
           create: post /apps/{appId}/api-keys/create
+          list: get /apps/{appId}/api-keys/list
           delete: delete /apps/{appId}/api-keys/{apiKeyId}
 
   transactions:
@@ -81,7 +109,9 @@ resources:
       transaction: Transaction
     methods:
       create: post /transactions/create
-      list: get /transactions/list
+      list:
+        endpoint: get /transactions/list
+        paginated: my_cursor_id_page
       retrieve: get /transactions/{transactionId}
 
   $client:

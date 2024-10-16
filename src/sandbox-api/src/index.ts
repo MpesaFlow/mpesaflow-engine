@@ -2,9 +2,9 @@ import { Hono } from "hono";
 import { instrument } from "@microlabs/otel-cf-workers";
 import { config } from "@/config/obesrvability";
 import type { Binding } from "@/types/honoTypes";
-import apiKeys from "@/routes/api-keys";
-import applications from "@/routes/applications";
-import transactions from "@/routes/transactions";
+import apiKeys from "@/sandbox-api/routes/api-keys";
+import applications from "@/sandbox-api/routes/applications";
+import transactions from "@/sandbox-api/routes/transactions";
 import { cors } from "hono/cors";
 
 const app = new Hono<{
