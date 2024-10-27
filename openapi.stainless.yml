@@ -98,8 +98,9 @@ resources:
       create: post /transactions/create
       list:
         endpoint: get /transactions/list
-        paginated: CursorIDPage
+        paginated: false
       retrieve: get /transactions/{transactionId}
+      
 
 
 settings:
