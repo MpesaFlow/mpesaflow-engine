@@ -27,13 +27,6 @@ components:
         error:
           type: string
 
-    Health:
-      type: object
-      properties:
-        status:
-          type: string
-          enum: [healthy]
-          
     Application:
       type: object
       required:
@@ -416,22 +409,6 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
   
-  /health:
-    get:
-      summary: Check server health
-      responses:
-        "200":
-          description: Server healthy
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: [healthy]
-        "500":
-          $ref: "#/components/responses/InternalServerError"
 
 externalDocs:
   url: https://docs.mpesaflow.com
