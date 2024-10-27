@@ -75,12 +75,12 @@ pagination:
 resources:
   apps:
     models:
-      application: Application
+      application: '#/components/schemas/Application'
     methods:
       create: post /apps/create
       list:
         endpoint: get /apps/list
-        paginated: CursorIDPage
+        paginated: true
       delete: delete /apps/{appId}
     subresources:
       api_keys:
@@ -88,17 +88,17 @@ resources:
           create: post /apps/{appId}/api-keys/create
           list:
             endpoint: get /apps/{appId}/api-keys/list
-            paginated: CursorIDPage
+            paginated: true
           delete: delete /apps/{appId}/api-keys/{apiKeyId}
 
   transactions:
     models:
-      transaction: Transaction
+      transaction: '#/components/schemas/Transaction'
     methods:
       create: post /transactions/create
       list:
         endpoint: get /transactions/list
-        paginated: false
+        paginated: true
       retrieve: get /transactions/{transactionId}
       
 
