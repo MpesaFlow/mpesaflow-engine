@@ -24,13 +24,21 @@ targets:
 
 client_settings:
   opts:
-    bearer_token:
+    app_api_key:
       type: string
-      description: Bearer token used for authentication
-      nullable: false
-      read_env: BEARER_TOKEN
+      description: API key for application access
+      nullable: true
+      read_env: APP_API_KEY
       auth:
-        security_scheme: BearerAuth
+        security_scheme: AppApiKey
+        role: value
+    root_api_key:
+      type: string
+      description: API key for root access
+      nullable: true
+      read_env: ROOT_API_KEY
+      auth:
+        security_scheme: RootApiKey
         role: value
 
 environments:
@@ -93,9 +101,6 @@ resources:
         paginated: CursorIDPage
       retrieve: get /transactions/{transactionId}
 
-  $client:
-    methods:
-      health: get /health
 
 settings:
   license: Apache-2.0
@@ -104,13 +109,13 @@ readme:
   example_requests:
     default:
       type: request
-      endpoint: post /apps/create
+      endpoint: post /transactions/create
       params: &ref_0 {}
     headline:
       type: request
-      endpoint: post /apps/create
+      endpoint: post /transactions/create
       params: *ref_0
     pagination:
       type: request
-      endpoint: get /apps/list
+      endpoint: get /transactions/list
       params: {}

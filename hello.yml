@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://app.stainlessapi.com/config.schema.json
+
+organization:
+  # Name of your organization or company, used to determine the name of the client
+  # and headings.
+  name: mpesaflow-sdk
+  docs: https://docs.mpesaflow-sdk.com
+  contact: dev-feedback@mpesaflow-sdk.com
+
+# `targets` define the output targets and their customization options, such as
+# whether to emit the Node SDK and what it's package name should be.
+targets:
+  node:
+    package_name: mpesaflow-sdk
+    production_repo: null
+    publish:
+      npm: false
+  python:
+    package_name: mpesaflow_sdk
+    production_repo: null
+    publish:
+      pypi: false
+
+# `client_settings` define settings for the API client, such as extra constructor
+# arguments (used for authentication), retry behavior, idempotency, etc.
+client_settings:
+  opts:
+    app_api_key:
+      type: string
+      description: API key for application access
+      nullable: false
+      read_env: APP_API_KEY
+      auth:
+        security_scheme: AppApiKey
+        role: value
+    root_api_key:
+      type: string
+      description: API key for root access
+      nullable: false
+      read_env: ROOT_API_KEY
+      auth:
+        security_scheme: RootApiKey
+        role: value
+
+# `environments` are a map of the name of the environment (e.g. "sandbox",
+# "production") to the corresponding url to use.
+environments:
+  production: https://api.mpesaflow.com
+  sandbox: https://sandbox-api.mpesaflow.com
+
+# `pagination` defines [pagination schemes] which provides a template to match
+# endpoints and generate next-page and auto-pagination helpers in the SDKs.
+pagination: []
+
+# `resources` define the structure and organziation for your API, such as how
+# methods and models are grouped together and accessed. See the [configuration
+# guide] for more information.
+#
+# [configuration guide]:
+#   https://app.stainlessapi.com/docs/guides/configure#resources
+resources:
+  apps:
+    # Configure the methods defined in this resource. Each key in the object is the
+    # name of the method and the value is either an endpoint (for example, `get /foo`)
+    # or an object with more detail.
+    #
+    # [reference]: https://app.stainlessapi.com/docs/reference/config#method
+    methods:
+      create: post /apps/create
+      list: get /apps/list
+      delete: delete /apps/{appId}
+    # Subresources define resources that are nested within another for more powerful
+    # logical groupings, e.g. `cards.payments`.
+    subresources:
+      api_keys:
+        methods:
+          create: post /apps/{appId}/api-keys/create
+          list: get /apps/{appId}/api-keys/list
+          delete: delete /apps/{appId}/api-keys/{apiKeyId}
+
+  transactions:
+    # Configure the models--named types--defined in the resource. Each key in the
+    # object is the name of the model and the value is either the name of a schema in
+    # `#/components/schemas` or an object with more detail.
+    #
+    # [reference]: https://app.stainlessapi.com/docs/reference/config#model
+    models:
+      transaction: Transaction
+    methods:
+      create: post /transactions/create
+      list: get /transactions/list
+      retrieve: get /transactions/{transactionId}
+
+settings:
+  license: Apache-2.0
+
+# `readme` is used to configure the code snippets that will be rendered in the
+# README.md of various SDKs. In particular, you can change the `headline`
+# snippet's endpoint and the arguments to call it with.
+readme:
+  example_requests:
+    default:
+      type: request
+      endpoint: post /transactions/create
+      params: &ref_0 {}
+    headline:
+      type: request
+      endpoint: post /transactions/create
+      params: *ref_0
+    pagination:
+      type: request
+      endpoint: get /transactions/
+      params: {}
