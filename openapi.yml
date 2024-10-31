@@ -31,6 +31,7 @@ components:
       type: object
       required:
        - id
+       - name
       properties:
         id:
           type: string
@@ -43,6 +44,8 @@ components:
       type: object
       required:
        - id
+       - keyName
+       - applicationId
       properties:
         id:
           type: string
@@ -55,6 +58,11 @@ components:
       type: object
       required:
        - id
+       - amount
+       - phoneNumber
+       - transactionId
+       - accountReference
+       - transactionDesc
       properties:
         id:
           type: string
@@ -67,8 +75,6 @@ components:
         accountReference:
           type: string
         transactionDesc:
-          type: string
-        mpesaRequestId:
           type: string
         status:
           type: string
