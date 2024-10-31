@@ -330,8 +330,6 @@ paths:
                   type: string
                 transactionDesc:
                   type: string
-                mpesaRequestId:
-                  type: string
       responses:
         "201":
           description: Transaction created successfully
