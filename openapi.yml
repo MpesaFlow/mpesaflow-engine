@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  title: MpesaFlow API
+  title: Flow API
   version: "1.0"
   description: API for managing MpesaFlow transactions, applications, and API keys
 servers:
